@@ -10,9 +10,9 @@ window.onload = function() {
     };
     
     //Sets up request for us; tells JS where to get the request from; and whether it is async or not
-    http.open("GET", "data/tweets.json", true);
+    http.open("GET", "data/tweets.json", false);
     http.send();
-    //console.log(http);
+    console.log('test');
 }
 
 /*
