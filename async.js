@@ -95,7 +95,7 @@ window.onload = function() {
     */
 
     //jQuery way of doing PROMISES:
-
+    /*
     $.get("data/tweets.json").then(function(tweets){
         console.log(tweets);
         return $.get("data/friends.json").then(function(friends){
@@ -105,5 +105,42 @@ window.onload = function() {
             });
         });
     });
+    */
+
+    //GENERATORS - you can pause them (they are like pausable functions) using yield keyword
+
+    /*
+    function* gen(){
+        var x = yield 10;
+    }
+
+    //prepares a generators, gets it ready
+    var myGen = gen();
+    console.log(myGen.next());//cycle not completed thru the generator, hence done is false
+    console.log(myGen.next());//cycle completed, done is true
+    */
+
+    genWrap(function*(){
+
+        var tweets = yield $.get("data/tweets.json");
+        console.log(tweets);
+        var friends = yield $.get("data/friends.json");
+        console.log(friends);
+        var fruits = yield $.get("data/fruits.json");
+        console.log(fruits);
+    });
+
+    function genWrap(generator){
+        var gen = generator();
+
+        function handle(yielded){
+            if(!yielded.done){
+                yielded.value.then(function(data){
+                    return handle(gen.next(data));
+                })
+            }
+        }
+        return handle(gen.next());
+    }
 }
 
