@@ -27,21 +27,23 @@ window.onload = function() {
     function cbTweets(data){
         console.log(data);
 
+        function cbFriends(data){
+            console.log(data);
+
+            $.ajax({
+                type:"GET",
+                url:"data/fruits.json",
+                success: function(data){
+                    console.log(data);
+                },
+                error:  handleError
+            });
+        }
+
         $.ajax({
             type:"GET",
             url:"data/friends.json",
-            success: function(data){
-                console.log(data);
-
-                $.ajax({
-                    type:"GET",
-                    url:"data/fruits.json",
-                    success: function(data){
-                        console.log(data);
-                    },
-                    error:  handleError
-                });
-            },
+            success: cbFriends,
             error:  handleError
         });
     }
