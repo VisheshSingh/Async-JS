@@ -19,37 +19,38 @@ window.onload = function() {
     console.log("test");
     */
 
+    //ERROR HANDLING
+    function handleError(jqXHR, textStatus, error){
+        console.log(error);
+    }
+
+    function cbTweets(data){
+        console.log(data);
+
+        $.ajax({
+            type:"GET",
+            url:"data/friends.json",
+            success: function(data){
+                console.log(data);
+
+                $.ajax({
+                    type:"GET",
+                    url:"data/fruits.json",
+                    success: function(data){
+                        console.log(data);
+                    },
+                    error:  handleError
+                });
+            },
+            error:  handleError
+        });
+    }
+
     $.ajax({
         type:"GET",
         url:"data/tweets.json",
-        success: function(data){
-            console.log(data);
-
-            $.ajax({
-                type:"GET",
-                url:"data/friends.json",
-                success: function(data){
-                    console.log(data);
-
-                    $.ajax({
-                        type:"GET",
-                        url:"data/fruits.json",
-                        success: function(data){
-                            console.log(data);
-                        },
-                        error: function(jqXHR, textStatus, error){
-                            
-                        }
-                    });
-                },
-                error: function(jqXHR, textStatus, error){
-                    
-                }
-            });
-        },
-        error: function(jqXHR, textStatus, error){
-
-        }
+        success: cbTweets,
+        error:  handleError
     });
 }
 
